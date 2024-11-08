@@ -26,7 +26,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: `http://localhost:${PORT}`,
+                url: `https://bazar-api-3ljg.onrender.com:${PORT}`,
             },
         ],
     },
@@ -44,7 +44,7 @@ app.use('/api', utilsRoutes);
 // Configuração para realizar uma requisição GET ao endpoint a cada 5 minutos
 setInterval(async () => {
     try {
-        const response = await axios.get(`http://localhost:${PORT}/api/status`);
+        const response = await axios.get(`https://bazar-api-3ljg.onrender.com/api/status`);
         console.log('Status da API:', response.data.status);
     } catch (error) {
         console.error('Erro ao verificar status da API:', error.message);
@@ -53,5 +53,4 @@ setInterval(async () => {
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
-    console.log(`Documentação disponível em http://localhost:${PORT}/api-docs`);
 });

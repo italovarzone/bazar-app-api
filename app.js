@@ -1,8 +1,10 @@
 const express = require('express');
 const vendasRoutes = require('./routes/vendas');
+const utilsRoutes = require('./routes/utils'); // Importa as rotas utilitárias
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 require('dotenv').config();
+const axios = require('axios'); // Biblioteca para fazer requisições HTTP
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,6 +38,18 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Rotas para o módulo de vendas
 app.use('/api/vendas', vendasRoutes);
+// Rotas utilitárias
+app.use('/api', utilsRoutes);
+
+// Configuração para realizar uma requisição GET ao endpoint a cada 5 minutos
+setInterval(async () => {
+    try {
+        const response = await axios.get(`http://localhost:${PORT}/api/status`);
+        console.log('Status da API:', response.data.status);
+    } catch (error) {
+        console.error('Erro ao verificar status da API:', error.message);
+    }
+}, 5 * 60 * 1000); // 5 minutos em milissegundos
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
